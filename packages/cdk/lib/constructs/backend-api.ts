@@ -32,7 +32,7 @@ export class Api extends Construct {
     identityPool.unauthenticatedRole.addToPrincipalPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ['transcribe:*'],
+        actions: ['transcribe:*','polly:*'],
         resources: ['*'],
       })
     );
@@ -62,7 +62,7 @@ export class Api extends Construct {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         resources: ['*'],
-        actions: ['bedrock:*', 'logs:*', 'translate:*'],
+        actions: ['bedrock:*', 'logs:*', 'translate:*','polly:*'],
       })
     );
     questionStreamFunction.grantInvoke(identityPool.unauthenticatedRole);

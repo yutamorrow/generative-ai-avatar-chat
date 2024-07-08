@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa6';
 import useTranscribeStreaming from '../hooks/useTranscribeStreaming';
 import ButtonIcon from './ButtonIcon';
+import { stopSpeech } from '../hooks/usePollyApi';
 
 const IDENTITY_POOL_ID = import.meta.env.VITE_APP_IDENTITY_POOL_ID!;
 const REGION = import.meta.env.VITE_APP_REGION!;
@@ -28,6 +29,7 @@ const InputQuestion: React.FC<Props> = (props) => {
   }, [props.content, props.disabled]);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const listener = (e: DocumentEventMap['keypress']) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -35,6 +37,7 @@ const InputQuestion: React.FC<Props> = (props) => {
 
         if (!disabledSend) {
           props.onSend(props.content);
+          stopSpeech();
         }
       }
     };
@@ -45,6 +48,7 @@ const InputQuestion: React.FC<Props> = (props) => {
       element?.removeEventListener('keypress', listener);
     };
   });
+
 
   const { transcripts, recording, startRecording, stopRecording } =
     useTranscribeStreaming({
@@ -60,6 +64,8 @@ const InputQuestion: React.FC<Props> = (props) => {
       if (!t.isPartial) {
         props.onSend(t.transcripts.join(' '));
         setTranscript('');
+        stopSpeech(); 
+        stopRecording(); 
       } else {
         setTranscript(t.transcripts.join(' '));
       }
@@ -67,9 +73,14 @@ const InputQuestion: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcripts]);
 
+  const handleStartRecording = () => {
+    stopSpeech();
+    startRecording();
+  };
+
   return (
     <div className={`${props.className ?? ''} relative`}>
-      <div className="border-primary/50 flex h-20 items-center justify-between rounded-3xl border-2 bg-white">
+      <div className="border-primary/50 flex h-24 items-center justify-between rounded-3xl border-2 bg-white">
         <div className="mx-5">
           {recording ? (
             <ButtonIcon onClick={stopRecording}>
@@ -78,7 +89,7 @@ const InputQuestion: React.FC<Props> = (props) => {
           ) : (
             <div>
               <ButtonIcon
-                onClick={startRecording}
+                onClick={handleStartRecording}
                 disabled={(props.transcribeLanguageCode ?? '') === ''}>
                 <FaMicrophone />
               </ButtonIcon>
@@ -115,8 +126,12 @@ const InputQuestion: React.FC<Props> = (props) => {
           disabled={disabledSend}
           square
           onClick={() => {
-            props.onSend(props.content);
-          }}>
+            if (!disabledSend) {
+              props.onSend(props.content);
+              stopSpeech();
+            }
+          }}
+        >
           <FaPaperPlane />
         </ButtonIcon>
       </div>

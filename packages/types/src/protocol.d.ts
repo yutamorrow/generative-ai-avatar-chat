@@ -3,3 +3,7 @@ export type QuestionRequest = {
   questionLang: string;
   questionLangCode: string;
 };
+
+export type TQuestionResponse =  {
+  message?: string;
+};
