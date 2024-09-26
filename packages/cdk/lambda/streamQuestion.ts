@@ -6,7 +6,7 @@ import translateApi from './utils/translateApi';
 import { QuestionRequest, TQuestionResponse } from 'rag-avatar-demo';
 
 const INIT_RESPONSE: TQuestionResponse ={
-  message: 'サンプルの場所はこちらになります',
+  message: 'test',
 }
 
 export const handler = async (event: any) => {

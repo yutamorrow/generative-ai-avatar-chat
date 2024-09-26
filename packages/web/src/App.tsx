@@ -153,10 +153,10 @@ const App: React.FC = () => {
             <Scene clearColor={new Color4(0.95, 0.95, 0.95)}>
               <arcRotateCamera
                 name="Camera"
-                alpha={1.55}
+                alpha={1.5}
                 beta={1.5}
                 radius={2.5}
-                target={new Vector3(0, -0.55, 1)}
+                target={Vector3.Zero()}
               />
               <Avatar />
             </Scene>

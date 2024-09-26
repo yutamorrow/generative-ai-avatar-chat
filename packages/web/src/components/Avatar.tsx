@@ -1,7 +1,8 @@
 import React from 'react';
 import '@babylonjs/loaders/glTF';
 
-import glbModel from '../models/sample-avatar.glb?url';
+// import glbModel from '../models/sample-avatar.glb?url';
+import glbModel from '../models/sukiya-staff2.glb?url';
 import { useSceneLoader } from 'react-babylonjs';
 import useAvatar from '../hooks/useAvatar';
 
